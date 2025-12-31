@@ -2,11 +2,11 @@
 
 .onion sitelerini Tor ağı üzerinden tarayan ve istihbarat toplayan Go uygulaması.
 
-## 🎯 Proje Amacı
+##  Proje Amacı
 
 Siber tehdit aktörleri izlerini kaybettirmek için Tor ağını kullanmaktadır. Bu araç, yüzlerce .onion adresini (sızıntı siteleri, forumlar, marketler) otomatik olarak tarayarak CTI (Cyber Threat Intelligence) süreçlerindeki "Collection" ve "Automation" yetkinliklerini destekler.
 
-## 📋 Özellikler
+##  Özellikler
 
 - **Tor Proxy Entegrasyonu**: SOCKS5 proxy (127.0.0.1:9050/9150) üzerinden anonim trafik
 - **IP Sızıntısı Önleme**: Özel `http.Transport` ve `http.Client` yapılandırması
@@ -18,7 +18,7 @@ Siber tehdit aktörleri izlerini kaybettirmek için Tor ağını kullanmaktadır
 - **Screenshot**: Tor üzerinden chromedp ile tam sayfa ekran görüntüsü
 - **İnteraktif Menü**: Hangi siteyi taramak istediğinizi seçebilirsiniz
 
-## 📁 Proje Yapısı
+##  Proje Yapısı
 
 ```
 TOR-Scraper/
@@ -28,13 +28,13 @@ TOR-Scraper/
 ├── targets.yaml         # Hedef .onion listesi (isim | url formatı)
 ├── scan_report.log      # Aktif/Pasif durum raporu
 ├── README.md            # Bu dosya
-└── outputs/
+└── outputs/             # Projeyi çalıştırdığında otomatik oluşur
     ├── html/            # Kaydedilen HTML dosyaları
     ├── screenshots/     # Ekran görüntüleri (PNG)
     └── report.json      # JSON rapor (metadata + linkler)
 ```
 
-## 🔧 Gereksinimler
+##  Gereksinimler
 
 - **Go**: 1.21 veya üzeri
 - **Tor Service**: Arka planda çalışır durumda (port 9050 veya 9150)
@@ -54,12 +54,12 @@ sudo systemctl start tor
 # Port: 9050
 ```
 
-## 🚀 Kurulum ve Çalıştırma
+##  Kurulum ve Çalıştırma
 
 ```bash
 # Projeyi klonla
-git clone <repo-url>
-cd TOR-Scraper
+git clone Patronibo/ThorScraperProject
+cd ThorScraperProject
 
 # Bağımlılıkları yükle
 go mod tidy
@@ -71,21 +71,19 @@ nano targets.yaml
 go run main.go
 ```
 
-## 📝 targets.yaml Formatı
+##  targets.yaml Formatı
 
 ```yaml
 # TOR Scraper - Hedef Listesi
 # Format: isim | url
 
-GhostHub Forum | http://example1234567890.onion
-DarkZone Market | http://anothersite5678.onion
-AskQuery Forum | http://thirdsite9999.onion
+........
 
 # Sadece URL de yazabilirsiniz:
-http://anotherurl.onion
+http://.....
 ```
 
-## 🎯 İnteraktif Site Seçimi
+##  İnteraktif Site Seçimi
 
 Program çalıştırıldığında size bir menü gösterir:
 
@@ -93,9 +91,9 @@ Program çalıştırıldığında size bir menü gösterir:
 ╔══════════════════════════════════════════════════════════════╗
 ║                    TOR SCRAPER - HEDEF SEÇİMİ                ║
 ╠══════════════════════════════════════════════════════════════╣
-║  [1] GhostHub Forum                                          ║
-║  [2] DarkZone Market                                         ║
-║  [3] AskQuery Forum                                          ║
+║  [1] ........ Forum                                          ║
+║  [2] ........ Market                                         ║
+║  [3] ........ Forum                                          ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  [0] Tüm siteleri tara                                       ║
 ║  [q] Çıkış                                                   ║
@@ -109,7 +107,7 @@ Seçiminiz (örn: 1,2,3 veya 0 hepsi için):
 - **Tüm siteler**: `0` yazıp Enter
 - **Çıkış**: `q` yazıp Enter
 
-## 📊 Çıktılar
+##  Çıktılar
 
 ### 1. Konsol Çıktısı
 
@@ -206,7 +204,7 @@ Toplam: 5 | Aktif: 3 | Pasif: 2
 }
 ```
 
-## 🏗️ Mimari (4 Ana Modül)
+##  Mimari (4 Ana Modül)
 
 ### 1. Dosya Okuma Modülü (Input Handler)
 - `targets.yaml` dosyasını okur
@@ -228,7 +226,7 @@ Toplam: 5 | Aktif: 3 | Pasif: 2
 - JSON rapor: `outputs/report.json`
 - Log rapor: `scan_report.log`
 
-## 📦 Kullanılan Kütüphaneler
+##  Kullanılan Kütüphaneler
 
 | Kütüphane | Açıklama |
 |-----------|----------|
@@ -237,15 +235,22 @@ Toplam: 5 | Aktif: 3 | Pasif: 2
 | `golang.org/x/net/html` | HTML parsing ve link çıkarma |
 | `os`, `bufio` | Dosya okuma/yazma |
 | `encoding/json` | JSON rapor oluşturma |
+| `compress/gzip` | Gzip sıkıştırma ve açma işlemleri için kullanılır. |
+| `context`  | zaman aşımı, iptal veya değer taşıma gibi işlemler için görevler arasında bağlam sağlar |
+| `crypto/sha1` | SHA-1 hash algoritmasını kullanarak verilerin özetini oluşturur |
+| `encoding/hex` | byte dizilerini hexadecimal stringe tam tersine dönüştürmek için kullanılır |
+| `path/filepath` | dosya yolları ile platform bağımsız çalışmayı sağlar |
+| `regexp`  | düzenli ifadelerle pattern eşleştirme yapar |
+| `github.com/chromedp/chromedp` | GO ile Chrome tarayıcısını kontrol edip otomatik tarama ve ekran görüntüsü almaya yarar |
 
-## 🔒 OpSec (Operasyonel Güvenlik)
+##  OpSec (Operasyonel Güvenlik)
 
 - **User-Agent**: Tarayıcı gibi görünmek için Chrome UA kullanılır
 - **Headers**: Accept, Accept-Language, Accept-Encoding
 - **Tor Doğrulama**: check.torproject.org ile IP kontrolü
 - **IP Sızıntısı Önleme**: Tüm trafik SOCKS5 üzerinden
 
-## ⚠️ Yasal Uyarı
+##  Yasal Uyarı
 
 Bu araç **yalnızca yasal ve etik amaçlarla** kullanılmalıdır:
 - Siber güvenlik araştırmaları
@@ -254,18 +259,6 @@ Bu araç **yalnızca yasal ve etik amaçlarla** kullanılmalıdır:
 - İzinli penetrasyon testleri
 
 Yasadışı faaliyetlerde kullanılması kesinlikle yasaktır.
-
-## 📈 Değerlendirme Kriterleri
-
-| Kriter | Puan | Açıklama |
-|--------|------|----------|
-| Girdi Dosyası Okuma | 15 | URL listesi hatasız okunur |
-| Tor Proxy Yönetimi | 15 | SOCKS5 üzerinden trafik yönlendirme |
-| Hata Yönetimi | 15 | Panic olmadan devam etme |
-| Kod Kalitesi | 15 | Go idioms, hata kontrolü |
-| Raporlama | 15 | Konsol + dosya loglama |
-| User-Agent/OpSec | 10 | Tarayıcı gibi görünme |
-| Proje Raporu | 15 | Profesyonel dokümantasyon |
 
 ## 📸 Örnek Ekran Görüntüleri
 
@@ -289,3 +282,4 @@ CTI Automation Project - Go ile Tor Scraper
 ## 📄 Lisans
 
 Bu proje eğitim amaçlıdır.
+
